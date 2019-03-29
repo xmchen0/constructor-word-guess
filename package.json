@@ -1,0 +1,23 @@
+{
+  "name": "word-guess-game",
+  "version": "1.0.0",
+  "description": "Create a Word Guess command-line game using constructor functions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xmkchen/constructor-word-guess.git"
+  },
+  "keywords": [
+    "word",
+    "guess"
+  ],
+  "author": "Kathy Chen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xmkchen/constructor-word-guess/issues"
+  },
+  "homepage": "https://github.com/xmkchen/constructor-word-guess#readme"
+}
