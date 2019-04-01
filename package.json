@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/xmkchen/constructor-word-guess/issues"
   },
-  "homepage": "https://github.com/xmkchen/constructor-word-guess#readme"
+  "homepage": "https://github.com/xmkchen/constructor-word-guess#readme",
+  "dependencies": {
+    "inquirer": "^6.2.2"
+  }
 }

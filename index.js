@@ -31,8 +31,8 @@ var wordArray = ['regifter', 'shrinkage', 'shiksappeal', 'festivus', 'manhands']
 var guesses;
 var guessesRemaining;
 var guessedWord;
-var correctWord;
-var numGuess = 10;
+var chosenWord;
+var numGuesses = 10;
 
 /* --------- *\
 |* Functions *|
@@ -45,33 +45,54 @@ function displayMessage() {
     // Console log message
     console.log('Hello! Welcome to Seinfeld Word Guess!');
     console.log('Can you guess this spectacular Seinfeld word?');
-    console.log('Press Any Key To Get Started');
     // Initiate
     playGame();
-}
+};
 
 // [3]
 function playGame() {
-    // Setup guesses remaining
+    // Setup guesses remaining and 
+    guesses = 10;
     // Display random word
+    randomWord = '';
+    let index = Math.floor(Math.random() * wordArray.length);
+    let randomWord = wordArray[index];
     // Use Word constructor to store it
-}
+    gameWord = new Word(randomWord);
+    guessesRemaining = gameWord.letterArray.length;
+    displayWord = gameWord.createWordString()
+    gameWord
+};
 
 // [4]
 function askToGuess() {
     // Prompts user for each guess
-    // Keep track of user's remaining guesses
-}
+    inquirer.prompt([{
+        name: 'ask',
+        message: 'Press Any Key To Get Started'
+    }]).then(function (response) {
+        var userInput = response.askToGuess;
+        // Number of guesses less than 0
+        if (numGuesses === 0) {
+            // Initiate
+            gameOver();
+            // 
+        } else if (userInput.length === 1 ){
+            gameWord.guessCheck(userInput);
+            displayWord = gameWord.createWordString();
+        }
+        // Keep track of user's remaining guesses
+    });
+};
 
 // Game Over
 function gameOver() {
     // Display game over message
     // Prompt users to select option to play again or quit game
-}
+};
 
 
 /* ------------ *\
 |* Main Process *|
 \* ------------ */
 playGame();
-askToGuess();
