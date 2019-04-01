@@ -24,4 +24,54 @@ const Word = require('./word.js');
 // [2]
 const inquirer = require('inquirer');
 
-// 
+// [3] store word data in array
+var wordArray = ['regifter', 'shrinkage', 'shiksappeal', 'festivus', 'manhands'];
+
+// [4] declare variables to keep track of userInput and guesses
+var guesses;
+var guessesRemaining;
+var guessedWord;
+var correctWord;
+var numGuess = 10;
+
+/* --------- *\
+|* Functions *|
+\* --------- */
+
+// When screen onloads
+function displayMessage() {
+    // Empty guesses remaining array
+    guessesRemaining = [];
+    // Console log message
+    console.log('Hello! Welcome to Seinfeld Word Guess!');
+    console.log('Can you guess this spectacular Seinfeld word?');
+    console.log('Press Any Key To Get Started');
+    // Initiate
+    playGame();
+}
+
+// [3]
+function playGame() {
+    // Setup guesses remaining
+    // Display random word
+    // Use Word constructor to store it
+}
+
+// [4]
+function askToGuess() {
+    // Prompts user for each guess
+    // Keep track of user's remaining guesses
+}
+
+// Game Over
+function gameOver() {
+    // Display game over message
+    // Prompt users to select option to play again or quit game
+}
+
+
+/* ------------ *\
+|* Main Process *|
+\* ------------ */
+playGame();
+askToGuess();
