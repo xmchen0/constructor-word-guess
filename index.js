@@ -170,6 +170,7 @@ function gameOver(result) {
             word.createWordString();
             numGuesses = 10;
             wrongLetters = [];
+            correctLetters = [];
             playGame();
         } else {
             console.log(chalk.cyan("Thanks for playing! Goodbye.\n"));
