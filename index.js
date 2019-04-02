@@ -28,17 +28,17 @@ const inquirer = require('inquirer');
 // import chalk to add colours
 const chalk = require('chalk');
 
-// [3]
+// store data in seinfeldArray
 var seinfeldArray = [
-    'regifter', 
-    'shrinkage', 
-    'shiksappeal', 
-    'festivus', 
-    'manhands', 
-    'closetalker', 
-    'lowtalker', 
-    'twoface', 
-    'spongeworthy', 
+    'regifter',
+    'shrinkage',
+    'shiksappeal',
+    'festivus',
+    'manhands',
+    'closetalker',
+    'lowtalker',
+    'twoface',
+    'spongeworthy',
     'giddyup',
     'yadayadayada',
     'mimbo',
@@ -52,6 +52,7 @@ var seinfeldArray = [
     'bizarro'
 ];
 
+// [3]
 word = new Word(seinfeldArray[Math.floor(Math.random() * seinfeldArray.length)]);
 word.createWordString();
 
@@ -80,7 +81,7 @@ function greeting() {
         // Initiate
         playGame();
     });
-}
+};
 
 // Load game
 function playGame() {
@@ -120,8 +121,9 @@ function playGame() {
         // Decrement guesses remaining if wrong letters guessed
         if (!word.word.includes(response.userInput)) {
             numGuesses--;
+        } else {
             wrongLetters.push(response.userInput);
-        }
+        };
 
         // Analyses if current letters in word matches to chosen word
         if (word.update() === word.word) {
@@ -132,28 +134,28 @@ function playGame() {
             return;
         } else {
             playGame();
-        }
+        };
 
     });
-}
+};
 
 // Display results
 function gameOver(result) {
     if (result === 'win') {
-        console.log(chalk.blue.bold("You Won! Happy Festivus!"));
-        console.log(chalk.yellow("The word is: ") + chalk.bgYellow.black(word.word) + "\n");
+        console.log("\n" + chalk.bgBlue.white.bold("You Won! Happy Festivus!"));
+        console.log(chalk.yellow("The word you guessed correctly is: ") + chalk.bgYellow.black(word.word) + "\n");
 
     } else if (result === 'lose') {
         console.log("\n" + chalk.bgRed.white.bold("No Soup For You!"));
         console.log(chalk.yellow("The word is: ") + chalk.bgYellow.black(word.word) + "\n");
     };
 
-    // Prompts user play again
+    // Prompts user to play again
     inquirer.prompt([
         {
             message: "Play again?",
-            name: "userInput",
             type: "confirm",
+            name: "userInput"
         }
     ]).then(function (response) {
         if (response.userInput) {

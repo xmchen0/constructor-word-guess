@@ -29,25 +29,25 @@ function Word(word) {
         for (var i = 0; i < wordString.length; i++) {
             let newLetter = new Letter(wordString[i]);
             this.letterArray.push(newLetter);
-        }
-    }
+        };
+    };
 
     // [3]
     this.update = function () {
         var string = '';
         for (var i = 0; i < this.letterArray.length; i++) {
             string += this.letterArray[i].guessCheck();
-        }
+        };
         return string;
-    }
+    };
 
     // [5]
     this.guessLetter = function (userInput) {
         for (var i = 0; i < this.letterArray.length; i++) {
             this.letterArray[i].letterCheck(userInput)
-        }
-    }
-}
+        };
+    };
+};
 
 // [6]
 module.exports = Word;

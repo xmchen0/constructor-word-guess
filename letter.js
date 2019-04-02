@@ -24,16 +24,16 @@ function Letter(letter) {
             return this.letter;
         } else {
             return "_ ";
-        }
-    }
+        };
+    };
 
     // [4]
     this.letterCheck = function (userInput) {
         if (this.letter === userInput) {
             this.guessed = true;
-        }
-    }
-}
+        };
+    };
+};
 
 // [5]
 module.exports = Letter;
