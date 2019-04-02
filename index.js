@@ -58,10 +58,11 @@ word.createWordString();
 
 // [4]
 var wrongLetters = [];
+var correctLetters = [];
 var numGuesses = 10;
 
-// Used with user validation to only enter letters
-var acceptedLetters = "abcdefghijklmnopqrstuvwxyz";
+// Used with user validation to only enter letters in lowercase
+var acceptedLetters = 'abcdefghijklmnopqrstuvwxyz';
 
 
 /* --------- *\
@@ -72,12 +73,13 @@ var acceptedLetters = "abcdefghijklmnopqrstuvwxyz";
 function greeting() {
     inquirer.prompt([
         {
-            message: "Hello! What's your name?",
+            message: "\nHello! What's your name?",
             type: 'input',
             name: 'userInput'
         }
     ]).then(function (response) {
-        console.log(chalk.cyan.bold(`Hello ${response['userInput']}! Can you guess this Seinfeld word?`))
+        console.log(chalk.cyan.bold(`Hello ${response['userInput']}! Can you guess this word from Seinfeld?`))
+        console.log(chalk.bgGreen.black(' Note ') + chalk.green(" this game is case-sensitive that expects you to enter all commands in lowercase."))
         // Initiate
         playGame();
     });
@@ -90,26 +92,29 @@ function playGame() {
         {
             message:
                 "\n" + '****************************************************' +
-                "\nWord: " + chalk.blue(word.update()) +
+                "\n\nWord: " + chalk.green(word.update()) +
                 "\n\nGuesses remaining: " + chalk.magenta.bold(numGuesses) +
-                "\nIncorrect guesses so far: " + chalk.magenta.bold(wrongLetters.join(' ')) +
-                "\n\nGuess a letter:",
+                "\nWrong guesses: " + chalk.magenta.bold(wrongLetters.join(' ')) +
+                "\n\nType here:",
             type: 'input',
             name: 'userInput'
         }
     ]).then(function (response) {
         // User input validation
         if (response.userInput === '') {
-            console.log(chalk.bgRed.white('Ops!') + chalk.yellow(" You have not entered a letter."));
+            console.log(chalk.bgRed.white(' Ops! ') + chalk.yellow(" You have not entered a letter."));
             return playGame();
         } else if (response.userInput.length > 1) {
-            console.log(chalk.bgRed.white('Ops!') + chalk.yellow(" Guess one letter at a time."));
+            console.log(chalk.bgRed.white(' Ops! ') + chalk.yellow(" Guess one letter at a time."));
             return playGame();
         } else if (!acceptedLetters.includes(response.userInput)) {
-            console.log(chalk.bgRed.white('Ops!') + chalk.yellow(" Enter only characters of the alphabet."));
+            console.log(chalk.bgRed.white(' Ops! ') + chalk.yellow(" Enter only lowercase letters of the alphabet."));
+            return playGame();
+        } else if (correctLetters.includes(response.userInput)) {
+            console.log(chalk.bgRed.white(' Ops! ') + chalk.yellow(" You already guessed that correctly. Choose another letter."));
             return playGame();
         } else if (wrongLetters.includes(response.userInput)) {
-            console.log(chalk.bgRed.white('Ops!') + chalk.yellow(" You already guessed that. Choose another letter."));
+            console.log(chalk.bgRed.white(' Ops! ') + chalk.yellow(" You already guessed that incorrectly. Choose another letter."));
             return playGame();
         };
 
@@ -121,8 +126,9 @@ function playGame() {
         // Decrement guesses remaining if wrong letters guessed
         if (!word.word.includes(response.userInput)) {
             numGuesses--;
-        } else {
             wrongLetters.push(response.userInput);
+        } else {
+            correctLetters.push(response.userInput);
         };
 
         // Analyses if current letters in word matches to chosen word
@@ -155,7 +161,7 @@ function gameOver(result) {
         {
             message: "Play again?",
             type: "confirm",
-            name: "userInput"
+            name: "userInput",
         }
     ]).then(function (response) {
         if (response.userInput) {
@@ -166,7 +172,7 @@ function gameOver(result) {
             wrongLetters = [];
             playGame();
         } else {
-            console.log(chalk.cyan("\nThanks for playing! Goodbye.\n"));
+            console.log(chalk.cyan("Thanks for playing! Goodbye.\n"));
             return;
         };
     });

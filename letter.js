@@ -23,7 +23,7 @@ function Letter(letter) {
         if (this.guessed) {
             return this.letter;
         } else {
-            return "_ ";
+            return " _ ";
         };
     };
 
