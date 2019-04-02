@@ -26,16 +26,25 @@ function Word(word) {
         let wordString = this.word.split('');
 
         // [4]
-        for (let i = 0; i < wordString.length; i++) {
+        for (var i = 0; i < wordString.length; i++) {
             let newLetter = new Letter(wordString[i]);
             this.letterArray.push(newLetter);
         }
     }
 
+    // [3]
+    this.update = function () {
+        var string = '';
+        for (var i = 0; i < this.letterArray.length; i++) {
+            string += this.letterArray[i].guessCheck();
+        }
+        return string;
+    }
+
     // [5]
     this.guessLetter = function (userInput) {
         for (var i = 0; i < this.letterArray.length; i++) {
-            this.letterArray[i].guessLetter(userInput)
+            this.letterArray[i].letterCheck(userInput)
         }
     }
 }

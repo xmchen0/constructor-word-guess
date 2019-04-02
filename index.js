@@ -24,75 +24,131 @@ const Word = require('./word.js');
 // [2]
 const inquirer = require('inquirer');
 
-// [3] store word data in array
-var wordArray = ['regifter', 'shrinkage', 'shiksappeal', 'festivus', 'manhands'];
+// import chalk to add colours
+const chalk = require('chalk');
 
-// [4] declare variables to keep track of userInput and guesses
-var guesses;
-var guessesRemaining;
-var guessedWord;
-var chosenWord;
+// [3]
+var seinfeldArray = ['regifter', 'shrinkage', 'shiksappeal', 'festivus', 'manhands'];
+word = new Word(seinfeldArray[Math.floor(Math.random() * seinfeldArray.length)]);
+word.createWordString();
+
+// [4]
+var wrongLetters = [];
 var numGuesses = 10;
+
+// Used with user validation to only enter letters
+var acceptedLetters = "abcdefghijklmnopqrstuvwxyz";
+
 
 /* --------- *\
 |* Functions *|
 \* --------- */
 
-// When screen onloads
-function displayMessage() {
-    // Empty guesses remaining array
-    guessesRemaining = [];
-    // Console log message
-    console.log('Hello! Welcome to Seinfeld Word Guess!');
-    console.log('Can you guess this spectacular Seinfeld word?');
-    // Initiate
-    playGame();
-};
-
-// [3]
-function playGame() {
-    // Setup guesses remaining and 
-    guesses = 10;
-    // Display random word
-    randomWord = '';
-    let index = Math.floor(Math.random() * wordArray.length);
-    let randomWord = wordArray[index];
-    // Use Word constructor to store it
-    gameWord = new Word(randomWord);
-    guessesRemaining = gameWord.letterArray.length;
-    displayWord = gameWord.createWordString()
-    gameWord
-};
-
-// [4]
-function askToGuess() {
-    // Prompts user for each guess
-    inquirer.prompt([{
-        name: 'ask',
-        message: 'Press Any Key To Get Started'
-    }]).then(function (response) {
-        var userInput = response.askToGuess;
-        // Number of guesses less than 0
-        if (numGuesses === 0) {
-            // Initiate
-            gameOver();
-            // 
-        } else if (userInput.length === 1 ){
-            gameWord.guessCheck(userInput);
-            displayWord = gameWord.createWordString();
+// Greetings
+function greeting() {
+    inquirer.prompt([
+        {
+            message: "Hello! What's your name?",
+            type: 'input',
+            name: 'userInput'
         }
-        // Keep track of user's remaining guesses
+    ]).then(function (response) {
+        console.log(chalk.cyan.bold(`Hello ${response['userInput']}! Can you guess this Seinfeld word?`))
+        // Initiate
+        playGame();
     });
-};
+}
 
-// Game Over
-function gameOver() {
-    // Display game over message
-    // Prompt users to select option to play again or quit game
+// Load game
+function playGame() {
+    // Prompts user for each guess
+    inquirer.prompt([
+        {
+            message:
+                "\n" + '****************************************************' +
+                "\nWord: " + chalk.blue(word.update()) +
+                "\n\nGuesses remaining: " + chalk.magenta.bold(numGuesses) +
+                "\nIncorrect guesses so far: " + chalk.magenta.bold(wrongLetters.join(' ')) +
+                "\n\nGuess a letter:",
+            type: 'input',
+            name: 'userInput'
+        }
+    ]).then(function (response) {
+        // User input validation
+        if (response.userInput === '') {
+            console.log(chalk.bgRed.white('Ops!') + chalk.yellow(" You have not entered a letter."));
+            return playGame();
+        } else if (response.userInput.length > 1) {
+            console.log(chalk.bgRed.white('Ops!') + chalk.yellow(" Guess one letter at a time."));
+            return playGame();
+        } else if (!acceptedLetters.includes(response.userInput)) {
+            console.log(chalk.bgRed.white('Ops!') + chalk.yellow(" Enter only characters of the alphabet."));
+            return playGame();
+        } else if (wrongLetters.includes(response.userInput)) {
+            console.log(chalk.bgRed.white('Ops!') + chalk.yellow(" You already guessed that. Choose another letter."));
+            return playGame();
+        };
+
+        // Loop through word to check response from userInput
+        for (var i = 0; i < word.letterArray.length; i++) {
+            word.letterArray[i].letterCheck(response.userInput);
+        };
+
+        // Decrement guesses remaining if wrong letters guessed
+        if (!word.word.includes(response.userInput)) {
+            numGuesses--;
+            wrongLetters.push(response.userInput);
+        }
+
+        // Analyses if current letters in word matches to chosen word
+        if (word.update() === word.word) {
+            gameOver('win');
+            return;
+        } else if (numGuesses === 0) {
+            gameOver('lose');
+            return;
+        } else {
+            playGame();
+        }
+
+    });
+}
+
+// Display results
+function gameOver(result) {
+    if (result === 'win') {
+        console.log(chalk.blue.bold("You Won! Happy Festivus!"));
+        console.log(chalk.yellow("The word is: ") + chalk.bgYellow.black(word.word) + "\n");
+
+    } else if (result === 'lose') {
+        console.log("\n" + chalk.bgRed.white.bold("No Soup For You!"));
+        console.log(chalk.yellow("The word is: ") + chalk.bgYellow.black(word.word) + "\n");
+    };
+
+    // Prompts user play again
+    inquirer.prompt([
+        {
+            message: "Play again?",
+            name: "userInput",
+            type: "confirm",
+        }
+    ]).then(function (response) {
+        if (response.userInput) {
+            console.log(chalk.cyan("\nRandomly selecting a new word..."));
+            word = new Word(seinfeldArray[Math.floor(Math.random() * seinfeldArray.length)]);
+            word.createWordString();
+            numGuesses = 10;
+            wrongLetters = [];
+            playGame();
+        } else {
+            console.log(chalk.cyan("\nThanks for playing! Goodbye.\n"));
+            return;
+        };
+    });
 };
 
 
 /* ------------ *\
 |* Main Process *|
 \* ------------ */
-playGame();
+greeting();

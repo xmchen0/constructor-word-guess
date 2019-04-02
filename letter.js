@@ -23,13 +23,13 @@ function Letter(letter) {
         if (this.guessed) {
             return this.letter;
         } else {
-            return "_";
+            return "_ ";
         }
     }
 
     // [4]
     this.letterCheck = function (userInput) {
-        if (userInput === this.letter) {
+        if (this.letter === userInput) {
             this.guessed = true;
         }
     }
