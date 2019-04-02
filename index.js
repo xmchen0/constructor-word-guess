@@ -14,6 +14,7 @@ Constructor Word Guess
 // [3] Randomly selects a word and uses the Word constructor to store it
 // [4] Prompts the user for each guess and keeps track of the user's remaining guesses
 
+
 /* ----------------------------- *\
 |* Declare Variables / Constants *|
 \* ----------------------------- */
@@ -28,7 +29,29 @@ const inquirer = require('inquirer');
 const chalk = require('chalk');
 
 // [3]
-var seinfeldArray = ['regifter', 'shrinkage', 'shiksappeal', 'festivus', 'manhands'];
+var seinfeldArray = [
+    'regifter', 
+    'shrinkage', 
+    'shiksappeal', 
+    'festivus', 
+    'manhands', 
+    'closetalker', 
+    'lowtalker', 
+    'twoface', 
+    'spongeworthy', 
+    'giddyup',
+    'yadayadayada',
+    'mimbo',
+    'bromanzier',
+    'shmoopie',
+    'doubledip',
+    'snapple',
+    'bigsalad',
+    'kavorka',
+    'labelmaker',
+    'bizarro'
+];
+
 word = new Word(seinfeldArray[Math.floor(Math.random() * seinfeldArray.length)]);
 word.createWordString();
 
@@ -89,7 +112,7 @@ function playGame() {
             return playGame();
         };
 
-        // Loop through word to check response from userInput
+        // Loop through letter array to check response from userInput
         for (var i = 0; i < word.letterArray.length; i++) {
             word.letterArray[i].letterCheck(response.userInput);
         };
